@@ -49,29 +49,35 @@ class MotorManager:
       self.motor_bl.stop() # stop the motor
       self.motor_br.stop() # stop the motor
 
-   def right(self, speed, angle, callback):
-      speed = max(min(speed, 1), 0)
-      angle = max(min(angle, 360), 0)
-      duration = self.calculateTurnDuration(self.max_rpm * speed, angle)
-
+   def right(self, speed):
       self.motor_fl.forward(speed)
       self.motor_bl.forward(speed)
       self.motor_fr.backward(speed)
       self.motor_fr.backward(speed)
-      
+
+   def turnRight(self, speed, angle, callback):
+      speed = max(min(speed, 1), 0)
+      angle = max(min(angle, 360), 0)
+      duration = self.calculateTurnDuration(self.max_rpm * speed, angle) 
+
+      self.right(speed)
+
       sleep(duration)
 
       callback(speed)
 
-   def left(self, speed, angle, callback):
-      speed = max(min(speed, 1), 0)
-      angle = max(min(angle, 360), 0)
-      duration = self.calculateTurnDuration(self.max_rpm * speed, angle)
-
+   def left(self, speed):
       self.motor_fl.backward(speed)
       self.motor_bl.backward(speed)
       self.motor_fr.forward(speed)
       self.motor_fr.forward(speed)
+
+   def turnLeft(self, speed, angle, callback):
+      speed = max(min(speed, 1), 0)
+      angle = max(min(angle, 360), 0)
+      duration = self.calculateTurnDuration(self.max_rpm * speed, angle)
+
+      self.left(speed)
 
       sleep(duration)
 

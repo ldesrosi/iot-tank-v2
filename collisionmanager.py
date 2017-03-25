@@ -10,14 +10,15 @@ class CollisionManager:
 
   def __init__(self):
     self.bus = smbus.SMBus(BUS_ID)
-    self.leftSensor = false
-    self.rightSensor = false
+    self.address = DEVICE_ADDRESS
+    self.leftSensor = False
+    self.rightSensor = False
     self.distance = 0
     self.lastUpdate = -1
 
-  def getCollisionData():
+  def getCollisionData(self):
     colData = bytearray()
-    colData = bus.read_i2c_block_data(address,2)
+    colData = self.bus.read_i2c_block_data(self.address,2)
  
     self.leftSensor = (colData[0]&1 != 0)
     self.rightSensor = (colData[0]&1 != 0)

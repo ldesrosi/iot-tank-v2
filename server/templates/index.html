@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="UTF-8">
+    <title>T.R.E.V.O.R Dashboard</title>
+
+    <link rel="stylesheet" href="/static/styles.css">
+
+    <script src="//cdnjs.cloudflare.com/ajax/libs/three.js/r67/three.js" type="text/javascript"></script>
+    <script src="//js.leapmotion.com/leap-0.6.2.js" type="text/javascript"></script>
+    <script src="//js.leapmotion.com/leap-plugins-0.1.6.1.js" type="text/javascript"></script>
+    <script src="//js.leapmotion.com/leap.rigged-hand-0.1.4.min.js" type="text/javascript"></script>
+  </head>
+
+  <body>
+    <div class="outer-wrap">
+      <header>
+        <div class="hflex-container round-borders">
+          <iframe src="http://192.168.99.100:30953/" class="flex-item"></iframe>
+          <iframe src="http://192.168.99.100:30953/" class="flex-item"></iframe>
+          <iframe src="http://192.168.99.100:30953/" class="flex-item"></iframe>
+          <img src="/video_feed" alt="robot video feed" class="flex-item">
+        </div>
+      </header>
+      <section class="hflex-container">
+        <div class="vflex-container round-borders flex-item">
+          <iframe src="http://192.168.99.100:30953/" class="flex-item"></iframe>
+          <iframe src="http://192.168.99.100:30953/" class="flex-item"></iframe>
+          <iframe src="http://192.168.99.100:30953/" class="flex-item"></iframe>
+          <iframe src="http://192.168.99.100:30953/" class="flex-item"></iframe>
+        </div>
+        <iframe src="/static/leap.html" class="motion-container" frameBorder="0"></iframe>
+      </section>
+    </div>
+  </body>
+</html>

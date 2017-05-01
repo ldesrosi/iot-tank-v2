@@ -1,0 +1,47 @@
+.outer-wrap {
+    padding: 5px;
+}
+
+header {
+    padding: 5px;
+}
+
+section {
+    padding: 5px;
+}
+
+.round-borders {
+    border-radius: 15px 15px 15px 15px;
+    background: #045FB4;
+    padding: 10px;
+}
+
+.vflex-container {
+    display: flex;
+    flex-direction: column;
+    flex-wrap: nowrap;
+    justify-content: center;
+    align-content: stretch;
+    align-items: stretch;
+}
+
+.hflex-container {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: nowrap;
+    justify-content: center;
+    align-content: stretch;
+    align-items: stretch;
+}
+
+.flex-item {
+    order: 0;
+    flex: 1 1 auto;
+    align-self: auto;
+}
+
+.motion-container {
+  order: 0;
+  flex: 2 1 auto;
+  align-self: auto;
+}

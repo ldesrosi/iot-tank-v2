@@ -12,7 +12,7 @@ class VideoStream(object):
 
     def initialize(self, server_url='http://192.168.0.21:5000/video_input'):
         if VideoStream.thread is None:
-            cls.server_url = server_url
+            self.server_url = server_url
 
             # start background frame thread
             VideoStream.thread = threading.Thread(target=self._thread)

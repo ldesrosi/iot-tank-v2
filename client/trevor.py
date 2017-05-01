@@ -48,11 +48,11 @@ class CommandNamespace(BaseNamespace):
 
 def main(argv):
     videoStream = VideoStream()
-    videoStream.ininitialize(argv[1])
+    videoStream.ininitialize("http://" + argv[1] + ":" + argv[2] +"/video_input")
 
     motorManager = MotorManager()
 
-    socketIO = SocketIO('localhost', 5000)
+    socketIO = SocketIO(argv[1], argv[2])
     cmd_namespace = socketIO.define(CommandNamespace, '/commands')
     socketIO.wait()
 

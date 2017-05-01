@@ -2,7 +2,7 @@ from gpiozero import Motor, OutputDevice
 from time import sleep
 import math
 
-# Motor nomenclature 
+# Motor nomenclature
 #      Front
 # L 0-(fl) (fr)-0 R
 # E               I
@@ -13,7 +13,7 @@ import math
 
 class MotorManager:
 
-   def __init__(self, max_rpm, wheel_diameter):
+   def __init__(self, max_rpm=120, wheel_diameter=5):
       self.motor_br = Motor(27, 24)
       self.motor_br_enable = OutputDevice(5, initial_value=1)
       self.motor_bl = Motor(22, 6)
@@ -31,8 +31,8 @@ class MotorManager:
 
    def forward(self, speed):
       speed = max(min(speed, 1), 0)
-      self.motor_fl.forward(speed) 
-      self.motor_fr.forward(speed) 
+      self.motor_fl.forward(speed)
+      self.motor_fr.forward(speed)
       self.motor_bl.forward(speed)
       self.motor_br.forward(speed)
 
@@ -43,7 +43,7 @@ class MotorManager:
       self.motor_bl.backward(speed)
       self.motor_br.backward(speed)
 
-   def stop(self): 
+   def stop(self):
       self.motor_fl.stop() # stop the motor
       self.motor_fr.stop() # stop the motor
       self.motor_bl.stop() # stop the motor
@@ -58,7 +58,7 @@ class MotorManager:
    def turnRight(self, speed, angle, callback):
       speed = max(min(speed, 1), 0)
       angle = max(min(angle, 360), 0)
-      duration = self.calculateTurnDuration(self.max_rpm * speed, angle) 
+      duration = self.calculateTurnDuration(self.max_rpm * speed, angle)
 
       self.right(speed)
 

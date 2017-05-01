@@ -56,7 +56,5 @@ def main(argv):
     cmd_namespace = socketIO.define(CommandNamespace, '/commands')
     socketIO.wait()
 
-
-
 if __name__ == "__main__":
-   main(sys.argv[1:])
+   main(sys.argv)

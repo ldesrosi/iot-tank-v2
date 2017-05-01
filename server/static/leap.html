@@ -114,14 +114,14 @@ THE SOFTWARE.
 
     if (Leap.loopController.plugins.playback.player.userHasControl) {
       if (connection != null && isready) {
-        msg = "{'s':"+speed_val +", 'a':"+angle_val+"}"
+        msg = "{\"s\":"+speed_val +", \"a\":"+angle_val+"}"
         connection.emit("command",msg);
 
         robotActive = true;
       }
     } else {
       if (robotActive) {
-        connection.emit("command","{'s':0, 'a':0}");
+        connection.emit("command","{\"s\":0, \"a\":0}");
         robotActive = false;
       }
     }

@@ -48,7 +48,7 @@ class CommandNamespace(BaseNamespace):
 
 def main(argv):
     videoStream = VideoStream()
-    videoStream.ininitialize("http://" + argv[1] + ":" + argv[2] +"/video_input")
+    videoStream.ininitialize(server_url="http://" + argv[1] + ":" + argv[2] +"/video_input")
 
     motorManager = MotorManager()
 

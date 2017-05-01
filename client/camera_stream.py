@@ -10,6 +10,10 @@ import cv2
 class VideoStream(object):
     thread = None  # background thread that reads frames from camera
     server_url = None
+    processors=[]
+
+    def addCallback(self, callback):
+        VideoStream.processors.append(callback)
 
     def initialize(self, server_url='http://192.168.0.21:5000/video_input'):
         if VideoStream.thread is None:
@@ -37,6 +41,11 @@ class VideoStream(object):
             for frame in camera.capture_continuous(rawCapture, 'bgr',
                                                  use_video_port=True):
                 image = numpy.copy(frame.array)
+
+                resuts = (image,0,0,0,0)
+                for (callback in cls.processors):
+                    results = callback(expand(results))
+                image = results[0]
 
                 stream.write(cv2.imencode('.jpg', image)[1])
 

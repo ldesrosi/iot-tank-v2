@@ -5,18 +5,21 @@ import json
 
 from socketIO_client import SocketIO, BaseNamespace
 
-import camera_stream 
+import camera_stream
 import motormanager
 import collisionmanager
 import datarecorder
 import image_processor
+import image_tracker
 import pantiltmanager
+import datarecorder
 
 #import logging
 #logging.getLogger('socketIO-client').setLevel(logging.DEBUG)
 #logging.basicConfig()
 
 motorManager = None
+panTiltManager = None
 videoStream = None
 socketIO = None
 cmd_namespace = None
@@ -50,14 +53,23 @@ def main(argv):
     print('Hostname:'+argv[1])
     print('Port:'+argv[2])
 
-    global motorManager, videoStream, socketIO, cmd_namespace 
+    hostname = argv[1]
+    webPort = argv[2]
+
+    global motorManager, panTiltManager, videoStream, socketIO, cmd_namespace
+
+    dataRec = datarecorder.DataRecorder("","",hostname)
+
+    panTiltManager = PanTiltManager()
 
     videoStream = camera_stream.VideoStream()
-    videoStream.initialize(server_url="http://" + argv[1] + ":" + argv[2] +"/video_input")
+    videoStream.addCallback(image_processor.FaceProcessor().process)
+    videoStream.addCallback(image_tracker.ImageTracker(panTiltManager).process)
+    videoStream.initialize(server_url="http://" + hostname + ":" + webPort +"/video_input")
 
-    motorManager = motormanager.MotorManager()
+    motorManager = motormanager.MotorManager(dataRecorder=dataRec)
 
-    socketIO = SocketIO(argv[1], argv[2])
+    socketIO = SocketIO(hostname, webPort)
     cmd_namespace = socketIO.define(CommandNamespace, '/commands')
     socketIO.wait()
 

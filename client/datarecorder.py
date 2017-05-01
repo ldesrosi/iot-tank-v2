@@ -5,21 +5,22 @@ import random
 import time
 
 class DataRecorder:
-    def __init__(self, measurement, user, password, host='localhost', port=8086, dbname='trevor'):
+    def __init__(self, user, password, host='localhost', port=8086, dbname='trevor'):
         self.client = InfluxDBClient(host, port, user, password, dbname)
-        self.measurement = measurement
 
-    def recordValue(self, value):
-        pointValues = [{
-                "time": datetime.datetime.today().strftime ("%Y-%m-%d %H:%M:%S"),
+    def getValue(self, measurement, value):
+        return {
+                "time": datetime.utcnow().strftime('%Y-%m-%d %H:%M:%S.%f')[:-3],
                 # "time": int(past_date.strftime('%s')),
-                "measurement": self.measurement,
+                "measurement": measurement,
                 'fields':  {
                     'value': value,
                 },
-            }]
-        self.client.write_points(pointValues)
+            }
 
-    def record(self, data):
-        self.client.write_points(data)
-
+    def record(self, values):
+        results = []
+        for val in values:
+            for k, v in val.items():
+                results.append(getValue(k,v))
+        self.client.write_points(results)

@@ -8,7 +8,7 @@ import numpy
 import pantiltmanager
 
 
-class FaceTracker(object):
+class FaceProcessor(object):
 
     # side face pattern detection
     profileface = cv2.CascadeClassifier("./haarcascade_profileface.xml")
@@ -20,7 +20,7 @@ class FaceTracker(object):
     Cface = [0,0]
     lastface = 0
 
-    def searchForFaces(self, image):
+    def process(self, image, x=0, y=0, w=0, h=0):
         faceFound = False
 
         if not faceFound:

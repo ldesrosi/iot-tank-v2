@@ -1,10 +1,11 @@
 #!/usr/bin/env python
 
 import sys
+import json
 
 from socketIO_client import SocketIO, BaseNamespace
-from camera_stream import VideoStream
 
+import camera_stream 
 import motormanager
 import collisionmanager
 import datarecorder
@@ -14,28 +15,27 @@ import pantiltmanager
 #import logging
 #logging.getLogger('socketIO-client').setLevel(logging.DEBUG)
 #logging.basicConfig()
+
 motorManager = None
 videoStream = None
 socketIO = None
 cmd_namespace = None
 
-def drive():
-   direction = request.args.get("direction")
-   if (direction == "left"):
-     motorManager.left(0.5)
-   elif (direction == "right"):
-     motorManager.right(0.5)
-   elif (direction == "front"):
-     motorManager.forward(0.5)
-   elif (direction == "back"):
-     motorManager.backward(0.5)
-   else:
+def drive(angle, speed):
+   if (speed == 0):
      motorManager.stop()
+   elif (angle < -15):
+     motorManager.left(speed)
+   elif (angle > 15):
+     motorManager.right(speed)
+   else:
+     motorManager.forward(0.5)
 
 class CommandNamespace(BaseNamespace):
     def on_drive(self, *args):
-        print('[websocket: drive]', args)
-        print(type(args))
+        print('[websocket: drive]:',args)
+        data = json.loads(args[0])
+        drive(data['a'],data['s'])
 
     def on_connect(self):
         print('[websocket: connect]')
@@ -47,10 +47,15 @@ class CommandNamespace(BaseNamespace):
         print('[websocket: reconnect]')
 
 def main(argv):
-    videoStream = VideoStream()
+    print('Hostname:'+argv[1])
+    print('Port:'+argv[2])
+
+    global motorManager, videoStream, socketIO, cmd_namespace 
+
+    videoStream = camera_stream.VideoStream()
     videoStream.initialize(server_url="http://" + argv[1] + ":" + argv[2] +"/video_input")
 
-    motorManager = MotorManager()
+    motorManager = motormanager.MotorManager()
 
     socketIO = SocketIO(argv[1], argv[2])
     cmd_namespace = socketIO.define(CommandNamespace, '/commands')

@@ -1,0 +1,21 @@
+apiVersion: extensions/v1beta1
+kind: Deployment
+metadata:
+  name: trevor-flask
+  labels:
+    app: trevor-flask
+spec:
+  strategy:
+    type: Recreate
+  template:
+    metadata:
+      labels:
+        app: trevor-flask
+        tier: backend
+    spec:
+      containers:
+      - image: ldesrosi/trevor-flask
+        name: trevor-flask
+        ports:
+        - containerPort: 5000
+          name: main

@@ -4,6 +4,7 @@
     ~~~~~~
 """
 import eventlet
+eventlet.sleep()
 eventlet.monkey_patch()
 
 import os
@@ -15,26 +16,26 @@ from flask import Flask, render_template, request, jsonify, Response, make_respo
 from flask_socketio import SocketIO
 
 app = Flask(__name__, static_url_path='/static')
-socketio = SocketIO(app, message_queue='redis://')
+socketio = SocketIO(app) #, message_queue='redis://')
 
 frame=None
 
-@app.route('/')
+@app.route('/trevor/')
 def show_dashboard():
     return render_template('index.html')
 
-@app.route('/video_spec')
+@app.route('/trevor/video_spec')
 def video_spec():
     spec = {'width':320, 'height':240}
     return jsonify(results=spec)
 
-@app.route('/video_input', methods=['POST'])
+@app.route('/trevor/video_input', methods=['POST'])
 def store_video_frame():
     global frame
     frame = request.data
     return make_response('OK')
 
-@app.route('/video_feed')
+@app.route('/trevor/video_feed')
 def video_feed():
     """Video streaming route. Put this in the src attribute of an img tag."""
     return Response(gen(),
@@ -53,22 +54,22 @@ def gen():
                b'Content-Type: image/jpeg\r\n\r\n' + frame + b'\r\n')
 
 
-@socketio.on('connect', namespace='/commands')
+@socketio.on('connect', namespace='/trevor/commands')
 def ws_conn():
     print("Connection established")
-    socketio.emit('msg', {'count': 1}, namespace='/commands')
+    socketio.emit('msg', {'count': 1}, namespace='/trevor/commands')
 
 
-@socketio.on('disconnect', namespace='/commands')
+@socketio.on('disconnect', namespace='/trevor/commands')
 def ws_disconn():
     print("Connection closed")
-    socketio.emit('msg', {'count': 1}, namespace='/commands')
+    socketio.emit('msg', {'count': 1}, namespace='/trevor/commands')
 
-@socketio.on('command', namespace='/commands')
+@socketio.on('command', namespace='/trevor/commands')
 def ws_drive(message):
     print(message)
     socketio.emit('drive', message,
-                  namespace="/commands")
+                  namespace="/trevor/commands")
 
 if __name__ == "__main__":
-    socketio.run(app, "0.0.0.0", port=5000)
+    socketio.run(app)

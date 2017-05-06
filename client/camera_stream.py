@@ -15,7 +15,7 @@ class VideoStream(object):
     def addCallback(self, callback):
         VideoStream.processors.append(callback)
 
-    def initialize(self, server_url='http://192.168.0.21:5000/video_input'):
+    def initialize(self, server_url='http://localhost:5000/trevor/video_input'):
         if VideoStream.thread is None:
             VideoStream.server_url = server_url
 

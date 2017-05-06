@@ -1,0 +1,9 @@
+Flask==0.12.1
+Jinja2==2.9
+Werkzeug==0.12
+pillow==2.7.0
+eventlet==0.21.0
+numpy==1.12.1
+Flask-SocketIO==2.8.6
+gunicorn==19.7.1
+redis==2.10.5

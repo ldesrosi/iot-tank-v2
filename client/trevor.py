@@ -51,26 +51,28 @@ class CommandNamespace(BaseNamespace):
 
 def main(argv):
     print('Hostname:'+argv[1])
-    print('Port:'+argv[2])
+    print('NGINX Port:'+argv[2])
+    print('Influx DB Port:'+argv[2])
 
     hostname = argv[1]
     webPort = argv[2]
+    influxPort = argv[3]
 
     global motorManager, panTiltManager, videoStream, socketIO, cmd_namespace
 
-    dataRec = datarecorder.DataRecorder("","",hostname)
+    dataRec = datarecorder.DataRecorder("","",host=hostname, port=influxPort)
 
     panTiltManager = PanTiltManager()
 
     videoStream = camera_stream.VideoStream()
     videoStream.addCallback(image_processor.FaceProcessor().process)
     videoStream.addCallback(image_tracker.ImageTracker(panTiltManager).process)
-    videoStream.initialize(server_url="http://" + hostname + ":" + webPort +"/video_input")
+    videoStream.initialize(server_url="http://" + hostname + ":" + webPort +"/trevor/video_input")
 
     motorManager = motormanager.MotorManager(dataRecorder=dataRec)
 
     socketIO = SocketIO(hostname, webPort)
-    cmd_namespace = socketIO.define(CommandNamespace, '/commands')
+    cmd_namespace = socketIO.define(CommandNamespace, '/trevor/commands')
     socketIO.wait()
 
 if __name__ == "__main__":

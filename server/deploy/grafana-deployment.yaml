@@ -9,8 +9,8 @@ spec:
     - port: 3000
   selector:
     app: grafana
-    tier: frontend
-  type: NodePort
+    tier: backend
+  type: ClusterIP
 ---
 apiVersion: v1
 kind: PersistentVolumeClaim
@@ -38,7 +38,7 @@ spec:
     metadata:
       labels:
         app: grafana
-        tier: frontend
+        tier: backend
     spec:
       containers:
       - image: grafana/grafana:latest

@@ -15,12 +15,12 @@ from PIL import Image
 from flask import Flask, render_template, request, jsonify, Response, make_response
 from flask_socketio import SocketIO
 
-app = Flask(__name__, static_url_path='/static')
+app = Flask(__name__, static_url_path='/trevor/static')
 socketio = SocketIO(app) #, message_queue='redis://')
 
 frame=None
 
-@app.route('/trevor/')
+@app.route('/trevor')
 def show_dashboard():
     return render_template('index.html')
 

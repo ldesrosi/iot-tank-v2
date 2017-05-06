@@ -1,3 +1,17 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: trevor-flask
+  labels:
+    app: trevor-flask
+spec:
+  ports:
+    - port: 5000
+  selector:
+    app: trevor-flask
+    tier: backend
+  type: ClusterIP
+---
 apiVersion: extensions/v1beta1
 kind: Deployment
 metadata:

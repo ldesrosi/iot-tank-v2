@@ -22,9 +22,9 @@ THE SOFTWARE.
   <head>
     <title>T.R.E.V.O.R Dashboard</title>
     <script src="//cdnjs.cloudflare.com/ajax/libs/three.js/r67/three.js"></script>
-    <script src="//js.leapmotion.com/leap-0.6.4.min.js"></script>
-    <script src="//js.leapmotion.com/leap-plugins-0.1.12.js"></script>
-    <script src="//js.leapmotion.com/leap.rigged-hand-0.1.7.min.js"></script>
+    <script src="//js.leapmotion.com/leap-0.6.2.js"></script>
+    <script src="//js.leapmotion.com/leap-plugins-0.1.6.1.js"></script>
+    <script src="//js.leapmotion.com/leap.rigged-hand-0.1.4.min.js"></script>
     <script type="text/javascript" src="//cdnjs.cloudflare.com/ajax/libs/socket.io/1.3.6/socket.io.min.js"></script>
 
     <style class="codepen">
@@ -149,7 +149,7 @@ THE SOFTWARE.
 
 	  controller.use('playback', {
 		  // This is a compressed JSON file of preprecorded frame data
-		  recording: '/static/pinch-bones-3-57fps.json.lz',
+		  recording: 'http://' + window.location.host + '/trevor/static/pinch-bones-3-57fps.json.lz',
 		  // How long, in ms, between repeating the recording.
 		  timeBetweenLoops: 1000,
 		  pauseOnHand: true

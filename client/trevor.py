@@ -62,7 +62,7 @@ def main(argv):
 
     dataRec = datarecorder.DataRecorder("","",host=hostname, port=influxPort)
 
-    panTiltManager = PanTiltManager()
+    panTiltManager = pantiltmanager.PanTiltManager()
 
     videoStream = camera_stream.VideoStream()
     videoStream.addCallback(image_processor.FaceProcessor().process)

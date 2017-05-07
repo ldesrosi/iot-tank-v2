@@ -10,7 +10,7 @@ class DataRecorder:
 
     def getValue(self, measurement, value):
         return {
-                "time": datetime.utcnow().strftime('%Y-%m-%d %H:%M:%S.%f')[:-3],
+                "time": datetime.datetime.now().strftime('%Y-%m-%d %H:%M:%S.%f')[:-3],
                 # "time": int(past_date.strftime('%s')),
                 "measurement": measurement,
                 'fields':  {
@@ -22,5 +22,5 @@ class DataRecorder:
         results = []
         for val in values:
             for k, v in val.items():
-                results.append(getValue(k,v))
+                results.append(self.getValue(k,v))
         self.client.write_points(results)

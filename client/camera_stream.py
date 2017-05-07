@@ -42,9 +42,9 @@ class VideoStream(object):
                                                  use_video_port=True):
                 image = numpy.copy(frame.array)
 
-                resuts = (image,0,0,0,0)
-                for (callback in cls.processors):
-                    results = callback(expand(results))
+                results = (image,0,0,0,0)
+                for callback in cls.processors:
+                    results = callback(*results)
                 image = results[0]
 
                 stream.write(cv2.imencode('.jpg', image)[1])

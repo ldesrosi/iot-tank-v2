@@ -38,14 +38,14 @@ spec:
     metadata:
       labels:
         app: influxdb
-        tier: backend
+        tier: frontend
     spec:
       containers:
       - image: influxdb:latest
         name: influxdb
         ports:
         - containerPort: 8086
-          name: main
+          name: api
         volumeMounts:
         - name: influxdb-persistent-storage
           mountPath: /var/lib/influxdb

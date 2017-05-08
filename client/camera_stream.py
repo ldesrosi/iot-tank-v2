@@ -48,10 +48,10 @@ class VideoStream(object):
                 #image = numpy.copy(frame.array)
                 image = Image.fromarray(frame.array)
 
-                resuts = (image,0,0,0,0)
+                #resuts = (image,0,0,0,0)
                 #for (callback in cls.processors):
-                #    results = callback(expand(results))
-                image = results[0]
+                #    results = callback(*results)
+                #image = results[0]
 
                 buf = StringIO()
                 image.save(buf, 'JPEG')

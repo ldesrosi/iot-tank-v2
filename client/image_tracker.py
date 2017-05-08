@@ -14,7 +14,7 @@ class ImageTracker(object):
        tolerance = 20
 
        if (x == 0 and y == 0 and w == 0 and h == 0):
-           return
+           return (image, 0, 0, 0, 0)
 
        # Coordinate of the center of the face
        x = x + (w/2)

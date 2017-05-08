@@ -37,7 +37,7 @@ class MotorManager:
       self.motor_fr.forward(speed)
       self.motor_bl.forward(speed)
       self.motor_br.forward(speed)
-      dataRecorder.record([{"FL":speed},{"FR":speed},{"BL":speed},{"BR":speed}])
+      self.dataRecorder.record([{"FL":float(speed)},{"FR":float(speed)},{"BL":float(speed)},{"BR":float(speed)}])
 
    def backward(self, speed):
       speed = max(min(speed, 1), 0)
@@ -45,21 +45,21 @@ class MotorManager:
       self.motor_fr.backward(speed)
       self.motor_bl.backward(speed)
       self.motor_br.backward(speed)
-      dataRecorder.record([{"FL":-speed},{"FR":-speed},{"BL":-speed},{"BR":-speed}])
+      self.dataRecorder.record([{"FL":float(-speed)},{"FR":float(-speed)},{"BL":float(-speed)},{"BR":float(-speed)}])
 
    def stop(self):
       self.motor_fl.stop() # stop the motor
       self.motor_fr.stop() # stop the motor
       self.motor_bl.stop() # stop the motor
       self.motor_br.stop() # stop the motor
-      dataRecorder.record([{"FL":0},{"FR":0},{"BL":0},{"BR":0}])
+      self.dataRecorder.record([{"FL":0.0},{"FR":0.0},{"BL":0.0},{"BR":0.0}])
 
    def right(self, speed):
       self.motor_fl.forward(speed)
       self.motor_bl.forward(speed)
       self.motor_fr.backward(speed)
       self.motor_fr.backward(speed)
-      dataRecorder.record([{"FL":speed},{"FR":-speed},{"BL":speed},{"BR":-speed}])
+      self.dataRecorder.record([{"FL":float(speed)},{"FR":float(-speed)},{"BL":float(speed)},{"BR":float(-speed)}])
 
    def turnRight(self, speed, angle, callback):
       speed = max(min(speed, 1), 0)
@@ -77,7 +77,7 @@ class MotorManager:
       self.motor_bl.backward(speed)
       self.motor_fr.forward(speed)
       self.motor_fr.forward(speed)
-      dataRecorder.record([{"FL":-speed},{"FR":speed},{"BL":-speed},{"BR":speed}])
+      self.dataRecorder.record([{"FL":float(-speed)},{"FR":float(speed)},{"BL":float(-speed)},{"BR":float(speed)}])
 
    def turnLeft(self, speed, angle, callback):
       speed = max(min(speed, 1), 0)

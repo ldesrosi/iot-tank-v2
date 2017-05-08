@@ -70,7 +70,7 @@ def main(argv):
     videoStream = camera_stream.VideoStream()
     videoStream.addCallback(image_processor.FaceProcessor().process)
     videoStream.addCallback(image_tracker.ImageTracker(panTiltManager).process)
-    videoStream.initialize(sockerIO)
+    videoStream.initialize(socketIO)
 
     motorManager = motormanager.MotorManager(dataRecorder=dataRec)
 

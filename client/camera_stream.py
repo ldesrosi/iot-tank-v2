@@ -71,8 +71,8 @@ class VideoStream(object):
                 #requests.post(cls.server_url, data=frame)
 
                 # reset stream for next frame
-                #stream.seek(0)
-                #stream.truncate()
+                stream.seek(0)
+                stream.truncate()
 
                 rawCapture.truncate(0)
 

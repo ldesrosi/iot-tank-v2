@@ -45,15 +45,15 @@ class VideoStream(object):
             stream = io.BytesIO()
             for frame in camera.capture_continuous(stream, 'jpeg',
                                                  use_video_port=True):
-                #image = numpy.copy(frame.array)
+                stream.seek(0)
                 image = Image.open(stream)
 
                 #resuts = (image,0,0,0,0)
                 #for (callback in cls.processors):
                 #    results = callback(*results)
                 #image = results[0]
-
-                buf = StringIO()
+                
+		buf = StringIO()
                 image.save(buf, 'JPEG')
 
                 data = {
@@ -62,18 +62,8 @@ class VideoStream(object):
 
                 cls.socketClient.emit('stream_input', data)
 
-                #stream.write(cv2.imencode('.jpg', image)[1])
-
-                # store frame
-                #stream.seek(0)
-                #frame = stream.read()
-
-                #requests.post(cls.server_url, data=frame)
-
                 # reset stream for next frame
                 stream.seek(0)
                 stream.truncate()
-
-                rawCapture.truncate(0)
 
         cls.thread = None

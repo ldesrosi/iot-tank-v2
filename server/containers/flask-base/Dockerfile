@@ -7,4 +7,4 @@ RUN apt-get install -y python-pip python-dev build-essential libopencv-dev pytho
 COPY ./requirements.txt /
 RUN pip install -r requirements.txt
 
-COPY ./geventlet.py.patch /usr/local/lib/python2.7/dist-packages/gunicorn/workers/geventlet.py
+#COPY ./geventlet.py.patch /usr/local/lib/python2.7/dist-packages/gunicorn/workers/geventlet.py

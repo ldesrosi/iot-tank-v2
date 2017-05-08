@@ -73,10 +73,11 @@ THE SOFTWARE.
   </body>
 
   <script type="text/javascript">
-  var robotActive =false;
+  var robotActive = false;
+  var last_speed_sent = 0;
   var isready = false;
   var connection = null;
-  var serverUrl = "http://" + window.location.host + "/trevor/commands";
+  var serverUrl = "http://" + window.location.host + "/trevor/io";
 
   function createWebSocket () {
     connection = new io.connect(serverUrl);
@@ -106,7 +107,7 @@ THE SOFTWARE.
 
     hand: function(hand){
 
-    var speed_val = hand.pinchStrength.toPrecision(2);
+    var speed_val = hand.pinchStrength.toPrecision(1);
     var angle_val = (hand.yaw()*180/Math.PI).toPrecision(2);
 		speed.innerHTML = speed_val;
     angle.innerHTML = angle_val;
@@ -114,9 +115,11 @@ THE SOFTWARE.
 
     if (Leap.loopController.plugins.playback.player.userHasControl) {
       if (connection != null && isready) {
-        msg = "{\"s\":"+speed_val +", \"a\":"+angle_val+"}"
-        connection.emit("command",msg);
-
+        if (speed_val != last_speed_sent) {
+            last_speed_sent = speed_val;
+            msg = "{\"s\":"+speed_val +", \"a\":"+angle_val+"}"
+            connection.emit("command",msg);
+        }
         robotActive = true;
       }
     } else {

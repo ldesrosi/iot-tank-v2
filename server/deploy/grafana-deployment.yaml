@@ -10,7 +10,7 @@ spec:
   selector:
     app: grafana
     tier: backend
-  type: ClusterIP
+  type: NodePort
 ---
 apiVersion: v1
 kind: PersistentVolumeClaim

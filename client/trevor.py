@@ -34,7 +34,7 @@ def drive(angle, speed):
    else:
      motorManager.forward(0.5)
 
-class CommandNamespace(BaseNamespace):
+class IONamespace(BaseNamespace):
     def on_drive(self, *args):
         print('[websocket: drive]:',args)
         data = json.loads(args[0])
@@ -60,6 +60,9 @@ def main(argv):
 
     global motorManager, panTiltManager, videoStream, socketIO, cmd_namespace
 
+    socketIO = SocketIO(hostname, webPort)
+    io_namespace = socketIO.define(IONamespace, '/trevor/io')
+
     dataRec = datarecorder.DataRecorder("","",host=hostname, port=influxPort)
 
     panTiltManager = PanTiltManager()
@@ -67,12 +70,10 @@ def main(argv):
     videoStream = camera_stream.VideoStream()
     videoStream.addCallback(image_processor.FaceProcessor().process)
     videoStream.addCallback(image_tracker.ImageTracker(panTiltManager).process)
-    videoStream.initialize(server_url="http://" + hostname + ":" + webPort +"/trevor/video_input")
+    videoStream.initialize(sockerIO)
 
     motorManager = motormanager.MotorManager(dataRecorder=dataRec)
 
-    socketIO = SocketIO(hostname, webPort)
-    cmd_namespace = socketIO.define(CommandNamespace, '/trevor/commands')
     socketIO.wait()
 
 if __name__ == "__main__":

@@ -27,7 +27,7 @@ section {
 
 .hflex-container {
     display: flex;
-    flex-direction: row;
+    flex-direction: reverse;
     flex-wrap: nowrap;
     justify-content: center;
     align-content: stretch;

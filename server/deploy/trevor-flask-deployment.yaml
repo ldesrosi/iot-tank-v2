@@ -10,7 +10,7 @@ spec:
   selector:
     app: trevor-flask
     tier: backend
-  type: ClusterIP
+  type: NodePort
 ---
 apiVersion: extensions/v1beta1
 kind: Deployment

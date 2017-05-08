@@ -52,11 +52,12 @@
       });
 
       connection.on( 'stream_output', function ( data ) {
-          console.log("stream_output received");
+          console.log("stream_output received" + data.raw.substring(1, 20));
           var img = new Image();
+          img.onload = function(){
+            canvas.getContext('2d').drawImage( img, 0, 0 );
+          };
           img.src = data.raw;
-
-          canvas.getContext('2d').drawImage( img, 0, 0 );
       } );
     }
     createWebSocket();

@@ -35,18 +35,18 @@ class VideoStream(object):
         with picamera.PiCamera() as camera:
             # camera setup
             camera.resolution = (320, 240)
+            camera.framerate =30
             camera.hflip = True
             camera.vflip = True
-
-            rawCapture = picamera.array.PiRGBArray(camera, size=camera.resolution)
 
             camera.start_preview()
             time.sleep(2)
 
-            for frame in camera.capture_continuous(rawCapture, 'bgr',
+            stream = io.BytesIO()
+            for frame in camera.capture_continuous(stream, 'jpeg',
                                                  use_video_port=True):
                 #image = numpy.copy(frame.array)
-                image = Image.fromarray(frame.array)
+                image = Image.open(stream)
 
                 #resuts = (image,0,0,0,0)
                 #for (callback in cls.processors):
@@ -74,6 +74,6 @@ class VideoStream(object):
                 #stream.seek(0)
                 #stream.truncate()
 
-                #rawCapture.truncate(0)
+                rawCapture.truncate(0)
 
         cls.thread = None

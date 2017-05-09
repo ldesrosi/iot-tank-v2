@@ -1,8 +1,4 @@
-import time
-import io
-import numpy
 import pantiltmanager
-
 
 class ImageTracker(object):
     def __init__(self, panTiltManager, width=320, height=240):
@@ -13,7 +9,7 @@ class ImageTracker(object):
     def process(self, image, x=0, y=0, w=0, h=0):
        tolerance = 20
 
-       if (x == 0 and y == 0 and w == 0 and h == 0):
+       if (w == 0 and h == 0):
            return (image, 0, 0, 0, 0)
 
        # Coordinate of the center of the face

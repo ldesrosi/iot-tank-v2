@@ -1,16 +1,12 @@
-import time
-import io
-import threading
-import picamera
-import picamera.array
-import numpy
-import requests
-import cv2
 import base64
+import io
+import picamera
+import time
+import threading
 
-from StringIO import StringIO
 from PIL import Image
 from socketIO_client import SocketIO
+from StringIO import StringIO
 
 class VideoStream(object):
     thread = None  # background thread that reads frames from camera
@@ -48,12 +44,12 @@ class VideoStream(object):
                 stream.seek(0)
                 image = Image.open(stream)
 
-                #resuts = (image,0,0,0,0)
-                #for (callback in cls.processors):
-                #    results = callback(*results)
-                #image = results[0]
-                
-		buf = StringIO()
+                resuts = (image,0,0,0,0)
+                for (callback in cls.processors):
+                    results = callback(*results)
+                image = results[0]
+
+                buf = StringIO()
                 image.save(buf, 'JPEG')
 
                 data = {

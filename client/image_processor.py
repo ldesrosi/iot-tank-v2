@@ -1,12 +1,9 @@
-import time
-import io
-import threading
-import picamera
-import picamera.array
 import cv2
+import io
 import numpy
-import pantiltmanager
+import time
 
+from PIL import Image
 
 class FaceProcessor(object):
 
@@ -21,11 +18,14 @@ class FaceProcessor(object):
     lastface = 0
 
     def process(self, image, x=0, y=0, w=0, h=0):
+        #Convert PIL Image to numpy array
+        open_cv_image = cv2.cvtColor(numpy.array(image), cv2.COLOR_RGB2BGR)
+
         faceFound = False
 
         if not faceFound:
             if self.lastface == 0 or self.lastface ==1:
-               fface = self.frontalface.detectMultiScale(image, 1.1, 2, 0, (60,60))
+               fface = self.frontalface.detectMultiScale(open_cv_image, 1.1, 2, 0, (60,60))
                if fface != ():		# if we found a frontal face...
                     self.lastface = 1	# set lastface 1 (so next loop we will only look for a frontface)
                     for f in fface:	# f in fface is an array with a rectangle representing a face
@@ -34,7 +34,7 @@ class FaceProcessor(object):
 
         if not faceFound:
             if self.lastface == 0 or self.lastface == 2:
-                pfacer = self.profileface.detectMultiScale(image, 1.3, 4,
+                pfacer = self.profileface.detectMultiScale(open_cv_image, 1.3, 4,
                                    (cv2.cv.CV_HAAR_DO_CANNY_PRUNING +
                                     cv2.cv.CV_HAAR_FIND_BIGGEST_OBJECT +
                                     cv2.cv.CV_HAAR_DO_ROUGH_SEARCH), (80,80))
@@ -48,8 +48,8 @@ class FaceProcessor(object):
         if not faceFound:			# a final attempt
             if self.lastface == 0 or self.lastface == 3:
                 flipImage = True
-                cv2.flip(image,1,image)	# flip the image
-                pfacel = self.profileface.detectMultiScale(image, 1.3, 4,
+                cv2.flip(open_cv_image,1,open_cv_image)	# flip the image
+                pfacel = self.profileface.detectMultiScale(open_cv_image, 1.3, 4,
                                    (cv2.cv.CV_HAAR_DO_CANNY_PRUNING +
                                     cv2.cv.CV_HAAR_FIND_BIGGEST_OBJECT +
                                     cv2.cv.CV_HAAR_DO_ROUGH_SEARCH), (80,80))
@@ -72,8 +72,10 @@ class FaceProcessor(object):
             # we are given an x,y corner point and a width and height, we need the center
             self.Cface = [(w/2+x),(h/2+y)]
 
-        cv2.cv.Rectangle(cv2.cv.fromarray(image), (x,y), (x+w, y+h), cv2.cv.RGB(255, 0, 0), 3, 8, 0)
+        cv2.cv.Rectangle(cv2.cv.fromarray(open_cv_image), (x,y), (x+w, y+h), cv2.cv.RGB(255, 0, 0), 3, 8, 0)
         if (flipImage):
-           cv2.flip(image,1,image) # flip back the image to preserve original orientation
+           cv2.flip(open_cv_image,1,open_cv_image) # flip back the image to preserve original orientation
+
+        image = Image.fromarray(cv2.cvtColor(open_cv_image, cv2.COLOR_BGR2RGB))
 
         return (image, x, y, w, h)

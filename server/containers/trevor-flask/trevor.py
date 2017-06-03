@@ -3,9 +3,6 @@
     Flaskr
     ~~~~~~
 """
-#import gevent.monkey
-#gevent.monkey.patch_all()
-
 import os
 import numpy
 import cv2
@@ -45,7 +42,6 @@ def ws_drive(message):
 
 @socketio.on('stream_input', namespace='/trevor/io')
 def stream_video(message):
-    print("stream_input received")
     socketio.emit('stream_output', message,
                   namespace="/trevor/io")
 

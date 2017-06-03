@@ -2,6 +2,7 @@
 
 import sys
 import json
+import signal
 
 from socketIO_client import SocketIO, BaseNamespace
 
@@ -49,10 +50,14 @@ class IONamespace(BaseNamespace):
     def on_reconnect(self):
         print('[websocket: reconnect]')
 
+def signal_handler(signal, frame):
+        videoStream.stop()
+        sys.exit(0)
+
 def main(argv):
     print('Hostname:'+argv[1])
-    print('NGINX Port:'+argv[2])
-    print('Influx DB Port:'+argv[2])
+    print('Web Port:'+argv[2])
+    print('Influx DB Port:'+argv[3])
 
     hostname = argv[1]
     webPort = argv[2]
@@ -67,14 +72,15 @@ def main(argv):
 
     panTiltManager = pantiltmanager.PanTiltManager()
 
-    videoStream = camera_stream.VideoStream()
+    videoStream = camera_stream.VideoStream(io_namespace)
     videoStream.addCallback(image_processor.FaceProcessor().process)
-    videoStream.addCallback(image_tracker.ImageTracker(panTiltManager).process)
-    videoStream.initialize(io_namespace)
+    #videoStream.addCallback(image_tracker.ImageTracker(panTiltManager).process)
+    videoStream.start()
 
     motorManager = motormanager.MotorManager(dataRecorder=dataRec)
 
     socketIO.wait()
 
 if __name__ == "__main__":
+   signal.signal(signal.SIGINT, signal_handler)
    main(sys.argv)

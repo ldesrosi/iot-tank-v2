@@ -63,6 +63,7 @@ class FaceProcessor(object):
             self.lastface = 0		# 	the next loop needs to know
             self.face = [0,0,0,0]	# so that it doesn't think the face is still where it was last loop
 
+
         x,y,w,h = self.face
 
         if self.lastface == 3:

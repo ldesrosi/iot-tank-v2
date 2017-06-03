@@ -8,26 +8,21 @@ from PIL import Image
 from socketIO_client import SocketIO
 from StringIO import StringIO
 
-class VideoStream(object):
-    thread = None  # background thread that reads frames from camera
-    server_url = None
-    socketClient = None
-    processors=[]
+class VideoStream(threading.Thread):
+
+    def __init__(self, socketClient):
+        threading.Thread.__init__(self)
+	self.done = False
+        self.socketClient = socketClient
+        self.processors = []
 
     def addCallback(self, callback):
-        VideoStream.processors.append(callback)
+        self.processors.append(callback)
 
-    def initialize(self, socketClient):
-        if VideoStream.thread is None:
-            VideoStream.socketClient = socketClient
+    def stop(self):
+        self.done=True
 
-            # start background frame thread
-            VideoStream.thread = threading.Thread(target=self._thread)
-            VideoStream.thread.start()
-
-
-    @classmethod
-    def _thread(cls):
+    def run(self):
         with picamera.PiCamera() as camera:
             # camera setup
             camera.resolution = (320, 240)
@@ -38,14 +33,18 @@ class VideoStream(object):
             camera.start_preview()
             time.sleep(2)
 
+            print('Starting camera stream.')
             stream = io.BytesIO()
             for frame in camera.capture_continuous(stream, 'jpeg',
                                                  use_video_port=True):
+                if (self.done):
+		    break;
+
                 stream.seek(0)
                 image = Image.open(stream)
 
-                resuts = (image,0,0,0,0)
-                for (callback in cls.processors):
+                results = (image,0,0,0,0)
+                for callback in self.processors:
                     results = callback(*results)
                 image = results[0]
 
@@ -56,10 +55,11 @@ class VideoStream(object):
                     'raw': 'data:image/jpeg;base64,' + base64.b64encode(buf.getvalue())
                 }
 
-                cls.socketClient.emit('stream_input', data)
+                self.socketClient.emit('stream_input', data)
 
                 # reset stream for next frame
                 stream.seek(0)
                 stream.truncate()
 
-        cls.thread = None
+            stream.close()
+            camera.close()

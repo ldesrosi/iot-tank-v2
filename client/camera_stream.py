@@ -33,7 +33,7 @@ class VideoStream(threading.Thread):
             camera.start_preview()
             time.sleep(2)
 
-            print('Starting camera stream.')
+            print('[camera: starting video stream]')
             stream = io.BytesIO()
             for frame in camera.capture_continuous(stream, 'jpeg',
                                                  use_video_port=True):
@@ -61,5 +61,7 @@ class VideoStream(threading.Thread):
                 stream.seek(0)
                 stream.truncate()
 
+
+            print("[camera: shutting down video stream]") 
             stream.close()
             camera.close()

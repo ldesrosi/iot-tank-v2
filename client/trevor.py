@@ -74,7 +74,7 @@ def main(argv):
 
     videoStream = camera_stream.VideoStream(io_namespace)
     videoStream.addCallback(image_processor.FaceProcessor().process)
-    #videoStream.addCallback(image_tracker.ImageTracker(panTiltManager).process)
+    videoStream.addCallback(image_tracker.ImageTracker(panTiltManager).process)
     videoStream.start()
 
     motorManager = motormanager.MotorManager(dataRecorder=dataRec)

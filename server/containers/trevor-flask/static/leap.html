@@ -65,11 +65,13 @@ THE SOFTWARE.
   </head>
 
   <body>
-    <div style="display: flex; flex-direction: column; flex-wrap: nowrap;">
-      <div id=speed></div>
-      <div id=angle></div>
+    <div max-width=640>
+      <div style="display: flex; flex-direction: column; flex-wrap: nowrap;">
+        <div id=speed></div>
+        <div id=angle></div>
+      </div>
+      <div id=progress></div>
     </div>
-    <div id=progress></div>
   </body>
 
   <script type="text/javascript">
@@ -166,7 +168,7 @@ THE SOFTWARE.
 	  overlay.style.top = 'auto';
 	  overlay.style.padding = 0;
 	  overlay.style.bottom = '13px';
-	  overlay.style.width = '180px';
+	  overlay.style.width = '100px';
 
 
 	  controller.use('riggedHand', {

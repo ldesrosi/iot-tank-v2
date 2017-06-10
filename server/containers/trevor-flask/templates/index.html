@@ -14,29 +14,81 @@
   </head>
 
   <body>
-    <div class="outer-wrap">
-      <header>
-        <div class="hflex-container round-borders">
-            <canvas id="videoStream"></canvas>
-        </div>
-      </header>
-      <section class="hflex-container">
-        <div class="vflex-container round-borders flex-item">
-          <iframe src="http://local.gateway.io:3000/dashboard-solo/db/trevor?orgId=1&refresh=5s&panelId=3&theme=light" width="450" height="200" frameborder="0" class="flex-item"></iframe>
-          <iframe src="http://local.gateway.io:3000/dashboard-solo/db/trevor?orgId=1&refresh=5s&panelId=4&theme=light" width="450" height="200" frameborder="0"class="flex-item"></iframe>
-          <iframe src="http://local.gateway.io:3000/dashboard-solo/db/trevor?orgId=1&refresh=5s&panelId=1&theme=light" width="450" height="200" frameborder="0" class="flex-item"></iframe>
-          <iframe src="http://local.gateway.io:3000/dashboard-solo/db/trevor?orgId=1&refresh=5s&panelId=2&theme=light" width="450" height="200" frameborder="0"class="flex-item"></iframe>
-        </div>
-        <iframe src="/trevor/static/leap.html" class="motion-container" frameborder="0"></iframe>
-      </section>
+    <div>
+        <img src="/trevor/static/trevor.png" class="logo" />
+    </div>
+    <div class="hflex-container">
+      <div id="dashboards" class="column-dashboard vflex-container">
+        <nav class="flex-item">
+          <ul>
+            <li class="tab selected"><a href="#">Motors</a></li>
+            <li class="tab"><a href="#">Sensors</a></li>
+            <li class="tab"><a href="#">Config</a></li>
+          </ul>
+        </nav>
+        <section id="Motors" class="content-dashboard vflex-container" style="display: block;">
+          <iframe src="http://local.gateway.io:3000/dashboard-solo/db/trevor?orgId=1&refresh=5s&panelId=3&theme=light" width="590" height="125" frameborder="0" class="flex-item"></iframe>
+          <iframe src="http://local.gateway.io:3000/dashboard-solo/db/trevor?orgId=1&refresh=5s&panelId=4&theme=light" width="590" height="125" frameborder="0"class="flex-item"></iframe>
+          <iframe src="http://local.gateway.io:3000/dashboard-solo/db/trevor?orgId=1&refresh=5s&panelId=1&theme=light" width="590" height="125" frameborder="0" class="flex-item"></iframe>
+          <iframe src="http://local.gateway.io:3000/dashboard-solo/db/trevor?orgId=1&refresh=5s&panelId=2&theme=light" width="590" height="125" frameborder="0"class="flex-item"></iframe>
+        </section>
+        <section id="Sensors" class="content-dashboard vflex-container" style="display: none;">
+          &nbps;
+        </section>
+        <section id="Config" class="content-dashboard vflex-container"style="display: none;">
+          &nbps;
+        </section>
+      </div>
+      <div id="control" class="column-control vflex-container">
+          <canvas id="videoStream" class="content-video"></canvas>
+          <iframe src="/trevor/static/leap.html" class="content-leap"></iframe>
+      </div>
     </div>
     <script type="text/javascript">
+    var tablinks = document.getElementsByClassName("tab");
+    for (i = 0; i < tablinks.length; i++) {
+        console.log("tab=" + tablinks[i].getElementsByTagName("a")[0].text);
+        tablinks[i].getElementsByTagName("a")[0].addEventListener('click', selectTab, false);
+    }
+
+    function selectTab(evt) {
+        // Declare all variables
+        var i, tabcontent, tablinks;
+
+        var tabValue = evt.currentTarget.innerHTML;
+
+        // Get all elements with class="tabcontent" and hide them
+        tabcontent = document.getElementsByClassName("content-dashboard");
+        for (i = 0; i < tabcontent.length; i++) {
+            tabcontent[i].style.display = "none";
+        }
+
+        // Get all elements with class="tablinks" and remove the class "active"
+        tablinks = document.getElementsByClassName("tab");
+        for (i = 0; i < tablinks.length; i++) {
+            tablinks[i].className = tablinks[i].className.replace(" selected", "");
+        }
+
+        // Show the current tab, and add an "active" class to the button that opened the tab
+        evt.currentTarget.parentNode.classList.add("selected");
+        document.getElementById(tabValue).style.display = "block";
+    };
+
     var isready = false;
     var connection = null;
     var serverUrl = "http://" + window.location.host + "/trevor/io";
     var canvas = document.getElementById('videoStream');
-    canvas.width = 320;
-    canvas.height = 240;
+    //canvas.width=300;
+    //canvas.height=165;
+
+    function loadDefaultImage() {
+      var img = new Image();
+      img.onload = function(){
+        canvas.getContext('2d').drawImage( img, 0, 0 );
+
+      };
+      img.src = '/trevor/static/baseimage.png';
+    }
 
     function createWebSocket () {
       connection = new io.connect(serverUrl);
@@ -52,7 +104,6 @@
       });
 
       connection.on( 'stream_output', function ( data ) {
-          console.log("stream_output received" + data.raw.substring(1, 20));
           var img = new Image();
           img.onload = function(){
             canvas.getContext('2d').drawImage( img, 0, 0 );
@@ -60,6 +111,7 @@
           img.src = data.raw;
       } );
     }
+    loadDefaultImage();
     createWebSocket();
     </script>
   </body>

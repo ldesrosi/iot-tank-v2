@@ -18,11 +18,6 @@ socketio = SocketIO(app) #, message_queue='redis://')
 def show_dashboard():
     return render_template('index.html')
 
-@app.route('/trevor/video_spec')
-def video_spec():
-    spec = {'width':320, 'height':240}
-    return jsonify(results=spec)
-
 @socketio.on('connect', namespace='/trevor/io')
 def ws_conn():
     print("Connection established")

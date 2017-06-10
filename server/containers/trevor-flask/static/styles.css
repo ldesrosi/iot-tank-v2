@@ -1,19 +1,8 @@
-.outer-wrap {
-    padding: 5px;
-}
-
-header {
-    padding: 5px;
-}
-
-section {
-    padding: 5px;
-}
-
-.round-borders {
-    border-radius: 15px 15px 15px 15px;
-    background: #045FB4;
-    padding: 10px;
+.logo {
+  float:right;
+  width:20%;
+  height:20%;
+  margin-right:30px
 }
 
 .vflex-container {
@@ -21,27 +10,101 @@ section {
     flex-direction: column;
     flex-wrap: nowrap;
     justify-content: center;
-    align-content: stretch;
-    align-items: stretch;
 }
 
 .hflex-container {
     display: flex;
-    flex-direction: reverse;
+    flex-direction: row;
     flex-wrap: nowrap;
     justify-content: center;
-    align-content: stretch;
-    align-items: stretch;
+    width: 100%;
 }
 
 .flex-item {
     order: 0;
     flex: 1 1 auto;
     align-self: auto;
+    margin: 5px;
 }
 
-.motion-container {
-  order: 0;
-  flex: 2 1 auto;
-  align-self: auto;
+nav ul {
+  list-style: none;
+  padding: 0 0 0 10px;
+  min-width: 460px;
+}
+
+nav li {
+  float: left;
+  position: relative;
+  height: 30px;
+  border-radius: 10px 30px 0 0;
+  margin-left: -10px;
+  text-shadow: 1px 1px 0 #bbb;
+  box-shadow: 0px 0px 10px rgba(0,0,0,.5);
+  transition: .2s;
+}
+
+nav a {
+  display: block;
+  position: relative;
+  width: 90px;
+  height: 20px;
+  padding: 6px 10px 20px 0;
+  border-radius: 10px 30px 0 0;
+  background: #999;
+  color: #444;
+  text-align: center;
+  text-decoration: none;
+  transition: .2s;
+}
+
+.selected {
+  z-index: 2;
+}
+
+.selected a {
+  z-index: 3;
+  background: #fff;
+  color: #000;
+  text-shadow: none;
+  font-weight: 500;
+}
+
+.column-dashboard {
+  @extend .flex-item;
+  width:50%;
+}
+
+.column-control {
+  @extend .flex-item;
+  width:50%;
+  align-content:space-between;
+  align-items:flex-end;
+}
+
+.content-dashboard {
+  @extend .flex-item;
+  position: relative;
+  width:640px;
+  height:600px;
+  z-index: 1;
+  clear: both;
+  padding: 20px;
+  border-radius: 10px;
+  box-shadow: 0px 0px 10px rgba(0,0,0,.5);
+  box-sizing: border-box;
+  background: #fff;
+}
+
+.content-video {
+  @extend .flex-item;
+  width:100%;
+  height:150px;
+}
+
+.content-leap {
+  @extend .flex-item;
+  border: 0px;
+  width:100%;
+  height:400px;
 }

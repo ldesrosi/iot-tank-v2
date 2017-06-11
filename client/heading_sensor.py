@@ -2,7 +2,7 @@ import time
 import threading
 import Adafruit_LSM9DS0
 
-class HeadingManager(threading.Thread):
+class HeadingSensor(threading.Thread):
 
     def __init__(self, dataRecorder=None):
         threading.Thread.__init__(self)

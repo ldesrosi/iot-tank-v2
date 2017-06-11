@@ -25,7 +25,7 @@ class VideoStream(threading.Thread):
     def run(self):
         with picamera.PiCamera() as camera:
             # camera setup
-            camera.resolution = (320, 240)
+            camera.resolution = (320, 180)
             camera.framerate =30
             camera.hflip = True
             camera.vflip = True

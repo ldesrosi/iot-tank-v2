@@ -1,7 +1,7 @@
 import pantiltmanager
 
 class ImageTracker(object):
-    def __init__(self, panTiltManager, width=320, height=240):
+    def __init__(self, panTiltManager, width=320, height=180):
         self.panTiltManager = panTiltManager
         self.width = width
         self.height = height

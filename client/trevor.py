@@ -8,11 +8,12 @@ from socketIO_client import SocketIO, BaseNamespace
 
 import camera_stream
 import motormanager
-import collisionmanager
+import collision_sensor
 import datarecorder
 import image_processor
 import image_tracker
 import pantiltmanager
+import heading_sensor
 import datarecorder
 
 #import logging
@@ -24,6 +25,8 @@ panTiltManager = None
 videoStream = None
 socketIO = None
 cmd_namespace = None
+headingSensor = None
+collisionSensor = None
 
 def drive(angle, speed):
    if (speed == 0):
@@ -33,7 +36,7 @@ def drive(angle, speed):
    elif (angle > 15):
      motorManager.right(speed)
    else:
-     motorManager.forward(0.5)
+     motorManager.forward(speed)
 
 class IONamespace(BaseNamespace):
     def on_drive(self, *args):
@@ -52,6 +55,8 @@ class IONamespace(BaseNamespace):
 
 def signal_handler(signal, frame):
         videoStream.stop()
+        headingSensor.stop()
+        collisionSensor.stop()
         sys.exit(0)
 
 def main(argv):
@@ -63,7 +68,7 @@ def main(argv):
     webPort = argv[2]
     influxPort = argv[3]
 
-    global motorManager, panTiltManager, videoStream, socketIO, cmd_namespace
+    global motorManager, panTiltManager, videoStream, socketIO, cmd_namespace, headingSensor, collisionSensor
 
     socketIO = SocketIO(hostname, webPort)
     io_namespace = socketIO.define(IONamespace, '/trevor/io')
@@ -78,6 +83,12 @@ def main(argv):
     videoStream.start()
 
     motorManager = motormanager.MotorManager(dataRecorder=dataRec)
+
+    headingSensor = heading_sensor.HeadingManager(dataRecorder=dataRec)
+    headingSensor.start()
+
+    collisionSensor = collision_sensor.CollisionSensor(dataRecorder=dataRec)
+    collisionSensor.start()
 
     socketIO.wait()
 

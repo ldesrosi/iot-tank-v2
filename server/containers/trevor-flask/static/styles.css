@@ -84,7 +84,6 @@ nav a {
 
 .content-dashboard {
   @extend .flex-item;
-  position: relative;
   width:640px;
   height:600px;
   z-index: 1;
@@ -96,6 +95,12 @@ nav a {
   background: #fff;
 }
 
+.dashboard {
+  @extend .flex-item;
+  width:590px;
+  height:125px;
+  border: 0px;
+}
 .content-video {
   @extend .flex-item;
   width:100%;

@@ -27,6 +27,7 @@ socketIO = None
 cmd_namespace = None
 headingSensor = None
 collisionSensor = None
+coliisionManager = None
 
 def drive(angle, speed):
    if (speed == 0):
@@ -68,7 +69,9 @@ def main(argv):
     webPort = argv[2]
     influxPort = argv[3]
 
-    global motorManager, panTiltManager, videoStream, socketIO, cmd_namespace, headingSensor, collisionSensor
+    global motorManager, panTiltManager, videoStream,
+           socketIO, cmd_namespace, headingSensor,
+           collisionSensor, collisionManager
 
     socketIO = SocketIO(hostname, webPort)
     io_namespace = socketIO.define(IONamespace, '/trevor/io')
@@ -87,8 +90,15 @@ def main(argv):
     headingSensor = heading_sensor.HeadingManager(dataRecorder=dataRec)
     headingSensor.start()
 
+    collisionManager = collision_manager.CollisionManager(panTiltManager, motorManager)
+
     collisionSensor = collision_sensor.CollisionSensor(dataRecorder=dataRec)
+    collisionSensor.addEventListener(collisionManager.processEvent)
     collisionSensor.start()
+
+
+
+
 
     socketIO.wait()
 

@@ -35,19 +35,21 @@
 
       </div>
       <div id="control" class="column-control vflex-container">
-          <canvas id="videoStream" class="content-video"></canvas>
+          <div class="content-video">
+             <canvas id="videoStream"></canvas>
+          </div>
           <iframe src="/trevor/static/leap.html" class="content-leap"></iframe>
       </div>
     </div>
     <script type="text/javascript">
     var tabContentDict = {
-      "Motors":  ["http://local.gateway.io:3000/dashboard-solo/db/trevor?orgId=1&refresh=5s&panelId=3&theme=light",
-                  "http://local.gateway.io:3000/dashboard-solo/db/trevor?orgId=1&refresh=5s&panelId=4&theme=light",
-                  "http://local.gateway.io:3000/dashboard-solo/db/trevor?orgId=1&refresh=5s&panelId=1&theme=light",
-                  "http://local.gateway.io:3000/dashboard-solo/db/trevor?orgId=1&refresh=5s&panelId=2&theme=light"],
-      "Sensors": ["http://local.gateway.io:3000/dashboard-solo/db/9dof?orgId=1&refresh=5s&panelId=1&theme=light",
-                  "http://local.gateway.io:3000/dashboard-solo/db/9dof?orgId=1&refresh=5s&panelId=2&theme=light",
-                  "http://local.gateway.io:3000/dashboard-solo/db/9dof?orgId=1&refresh=5s&panelId=3&theme=light"],
+      "Motors":  ["/dashboard-solo/db/trevor?orgId=1&refresh=5s&panelId=3&theme=light",
+                  "/dashboard-solo/db/trevor?orgId=1&refresh=5s&panelId=4&theme=light",
+                  "/dashboard-solo/db/trevor?orgId=1&refresh=5s&panelId=1&theme=light",
+                  "/dashboard-solo/db/trevor?orgId=1&refresh=5s&panelId=2&theme=light"],
+      "Sensors": ["/dashboard-solo/db/9dof?orgId=1&refresh=5s&panelId=1&theme=light",
+                  "/dashboard-solo/db/9dof?orgId=1&refresh=5s&panelId=2&theme=light",
+                  "/dashboard-solo/db/9dof?orgId=1&refresh=5s&panelId=3&theme=light"],
       "Config":  []
     };
 

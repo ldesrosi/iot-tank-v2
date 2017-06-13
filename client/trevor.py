@@ -87,7 +87,7 @@ def main(argv):
 
     motorManager = motormanager.MotorManager(dataRecorder=dataRec)
 
-    headingSensor = heading_sensor.HeadingManager(dataRecorder=dataRec)
+    headingSensor = heading_sensor.HeadingSensor(dataRecorder=dataRec)
     headingSensor.start()
 
     collisionManager = collision_manager.CollisionManager(panTiltManager, motorManager)

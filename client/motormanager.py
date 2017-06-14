@@ -24,18 +24,34 @@ class MotorManager:
       self.motor_fl_enable = OutputDevice(25, initial_value=1)
 
       self.blocked = False
+      self.block_id = None
 
       self.dataRecorder = dataRecorder
+      self.lock = threading.Lock()
 
-   def block(self):
-       self.blocked = True
-       self.stop()
+   def block(self, block_id):
+       with lock:
+           if verifyBlock(block_id):
+               self.block_id = block_id
+               self.stop()
 
-   def unblock(self):
-       self.blocked = False
+   def unblock(self, block_id):
+       with lock:
+           if verifyBlock(block_id):
+               self.block_id = None
 
-   def forward(self, speed):
-       if not self.blocked:
+   def verifyBlock(self, block_id):
+       if (self.block_id is None):        #No block set... ok to proceed
+           return True
+       elif (block_id is None):           #Block set but function called without block id... block the call
+           return False
+       elif (self.block_id == block_id):  #Block set and function received a matching block... allow the call
+           return True
+       else:
+           raise ValueError('Wrong block_id received.  Expected ' + str(self.block_id) + '. Received ' + str(block_id))
+
+   def forward(self, speed, block_id=None):
+       if self.verifyBlock:(block_id):
           speed = max(min(speed, 1), 0)
           self.motor_fl.forward(speed)
           self.motor_fr.forward(speed)
@@ -43,8 +59,8 @@ class MotorManager:
           self.motor_br.forward(speed)
           self.dataRecorder.record([{"FL":float(speed)},{"FR":float(speed)},{"BL":float(speed)},{"BR":float(speed)}])
 
-   def backward(self, speed):
-       if not self.blocked:
+   def backward(self, speed, block_id=None):
+       if self.verifyBlock:(block_id):
           speed = max(min(speed, 1), 0)
           self.motor_fl.backward(speed)
           self.motor_fr.backward(speed)
@@ -59,16 +75,16 @@ class MotorManager:
       self.motor_br.stop() # stop the motor
       self.dataRecorder.record([{"FL":0.0},{"FR":0.0},{"BL":0.0},{"BR":0.0}])
 
-   def right(self, speed):
-       if not self.blocked:
+   def right(self, speed, block_id=None):
+       if self.verifyBlock:(block_id):
           self.motor_fl.forward(speed)
           self.motor_bl.forward(speed)
           self.motor_fr.backward(speed)
           self.motor_fr.backward(speed)
           self.dataRecorder.record([{"FL":float(speed)},{"FR":float(-speed)},{"BL":float(speed)},{"BR":float(-speed)}])
 
-   def left(self, speed):
-       if not self.blocked:
+   def left(self, speed, block_id=None):
+       if self.verifyBlock:(block_id):
           self.motor_fl.backward(speed)
           self.motor_bl.backward(speed)
           self.motor_fr.forward(speed)

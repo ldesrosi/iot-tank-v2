@@ -90,7 +90,7 @@ def main(argv):
     headingSensor = heading_sensor.HeadingSensor(dataRecorder=dataRec)
     headingSensor.start()
 
-    collisionManager = collision_manager.CollisionManager(panTiltManager, motorManager)
+    collisionManager = collision_manager.CollisionManager(panTiltManager, motorManager, 108, 120, 198)
 
     collisionSensor = collision_sensor.CollisionSensor(dataRecorder=dataRec)
     collisionSensor.addEventListener(collisionManager.processEvent)
